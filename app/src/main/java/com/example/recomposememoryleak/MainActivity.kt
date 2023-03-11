@@ -12,8 +12,8 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.lifecycle.findViewTreeLifecycleOwner
+import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,9 +27,11 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(
             ComposeView(this).apply {
-                ViewTreeLifecycleOwner.set(this, this.findViewTreeLifecycleOwner())
+                setViewTreeLifecycleOwner(this.findViewTreeLifecycleOwner())
                 setViewTreeSavedStateRegistryOwner(this.findViewTreeSavedStateRegistryOwner())
-                setContent { ScreenContent(textMutableState.collectAsState(initial = "").value) }
+                setContent {
+                    ScreenContent(textMutableState.collectAsState(initial = "").value)
+                }
             }
         )
     }
